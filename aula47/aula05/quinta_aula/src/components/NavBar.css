@@ -1,0 +1,19 @@
+import 
+
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav a {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    color: #333;
+}

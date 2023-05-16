@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arvore DOM</title>
+    <style>
+
+        .hide{
+            display: none;
+        }
+
+        .show{
+            display: block;
+            background-color: coral;
+            max-width: fit-content;
+            max-height: fit-content;
+        }
+    </style>
+</head>
+<body>
+    <label for="">Produto</label> 
+    <input type="text" id="produto">
+    <label for="">Maior idade?<input type="checkbox" id="maiorIdade"> </label><br>
+    <div class="hide">
+        <label for="">bebidas</label>
+        <select name="bebidas">
+            <option value="cerveja">cerveja</option>
+            <option value="whisky">whisky</option>
+            <option value="tequila">tequila</option>
+        </select>
+    </div>
+    <button onclick="inserirProduto()">Inserir</button>
+
+    <script src="./script.js"></script>
+</body>
+</html>

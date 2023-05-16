@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da velha</title>
+    <!-- link para o css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Jogo da velha</h1>
+    <div class="buttons-container">
+        <button id="2-players">2 Jogadores</button>
+        <button id="ia-player">Contra IA</button>
+    </div>
+
+    <div id="container" class="hide"> <!-- div com o jogo e o placar -->
+        <div class="box" id="block-1"></div>
+        <div class="box" id="block-2"></div>
+        <div class="box" id="block-3"></div>
+        <div class="box" id="block-4"></div>
+        <div class="box" id="block-5"></div>
+        <div class="box" id="block-6"></div>
+        <div class="box" id="block-7"></div>
+        <div class="box" id="block-8"></div>
+        <div class="box" id="block-9"></div>
+
+        <div id="placar-container"> <!-- exibição do placar -->
+            <h2>Placar:</h2>
+            <span class="placar"> <!-- pontuação do x-->
+                <span id="x-placar">X</span>:
+                <span id="placar-1">0</span>
+            </span>
+
+            <span class="placar"> <!-- pontuação do o -->
+                <span id="o-placar"></span>:
+                <span id="placar-2">0</span>
+            </span>
+        </div>
+    </div>
+
+    <div class="hide"> <!-- elementos que serão inseridos no jogo -->
+        <div class="x">X</div>
+        <div class="o"></div> <!-- o será estilizado no CSS -->
+    </div>
+
+    <div id="container-mensagem" class="hide">
+        <p>adsd</p> 
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
