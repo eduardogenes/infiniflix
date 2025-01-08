@@ -1,85 +1,67 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { 
-  BsGraphUp,
-  BsWallet2,
-  BsHourglassSplit,
-  BsFillFileEarmarkTextFill
- } from "react-icons/bs";
-import MovieCard from '../components/MovieCard';
-import './Movie.css'
-
-const movieURL = import.meta.env.VITE_API;
-const apiKey = import.meta.env.VITE_API_KEY;
-
-
+    BsGraphUp, 
+    BsWallet2, 
+    BsHourglassSplit, 
+    BsFillFileEarmarkTextFill 
+} from "react-icons/bs"
+import { movieService, utils } from '../services/api'
+import '../styles/pages/Movie.css'
 
 const Movie = () => {
-  const {id} = useParams()
-  const [movie, setMovie] = useState(null)
+    const { id } = useParams()
+    const [movie, setMovie] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-  const getMovie = async (url) => {
-    const res = await fetch(url)
-    const data = await res.json()
-    setMovie(data)
-  }
+    useEffect(() => {
+        const fetchMovie = async () => {
+            try {
+                setLoading(true)
+                const data = await movieService.getById(id)
+                setMovie(data)
+            } catch (err) {
+                setError('Failed to load movie details')
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
 
-  useEffect(() => {
-    const url = `${movieURL}${id}?${apiKey}`
-    getMovie(url);
-  },[])
+        fetchMovie()
+    }, [id])
 
-  const formatarValor = (valor) => {
-    return valor.toLocaleString("en-us", {
-      style: 'currency',
-      currency: 'USD'
-    });
-  }
+    if (loading) return <div className="movie-page"><h2>Carregando...</h2></div>
+    if (error) return <div className="movie-page"><h2>{error}</h2></div>
+    if (!movie) return null
 
-  return (
-    <div className="movie-page">
-      {movie && (
-        <>
-        <MovieCard movie={movie} showLink={false}/>
-        <div className="info">
-          <h3>
-            <BsWallet2/> Orçamento:
-          </h3>
-          <p>
-            {formatarValor(movie.budget)}
-          </p>
+    return (
+        <div className="movie-page">
+            <div className="movie-card">
+                <img src={utils.getImageUrl(movie.poster_path)} alt={movie.title} />
+                <h2>{movie.title}</h2>
+                <p>
+                    <BsWallet2 /> Orçamento: {utils.formatCurrency(movie.budget)}
+                </p>
+                <p>
+                    <BsGraphUp /> Receita: {utils.formatCurrency(movie.revenue)}
+                </p>
+                <p>
+                    <BsHourglassSplit /> Duração: {movie.runtime} minutos
+                </p>
+                {movie.tagline && (
+                    <div className="tagline">{movie.tagline}</div>
+                )}
+                <div className="info description">
+                    <h3>
+                        <BsFillFileEarmarkTextFill /> Descrição:
+                    </h3>
+                    <p>{movie.overview}</p>
+                </div>
+            </div>
         </div>
-        <div className="info">
-          <h3>
-            <BsGraphUp/> Receita:
-
-          </h3>
-          <p>
-            {formatarValor( movie.revenue)}
-          </p>
-        </div>
-        <div className="info">
-          <h3>
-            <BsHourglassSplit/> Duração:
-
-          </h3>
-          <p>
-            {movie.runtime} minutos
-          </p>
-        </div>
-        <div className="info">
-          <h3>
-            <BsFillFileEarmarkTextFill/> Descrição:
-
-          </h3>
-          <p>
-            {movie.overview}
-          </p>
-        </div>
-        </>
-      )}
-    </div>
-  )
+    )
 }
 
 export default Movie
