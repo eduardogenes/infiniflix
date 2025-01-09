@@ -1,50 +1,120 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
-import { movieService } from "../services/api"
+import { tmdbService } from "../services/api"
 import MovieCard from "../components/MovieCard"
+import MovieFilters from "../components/MovieFilters"
+import ContentTypeSwitch from "../components/ContentTypeSwitch"
 import '../styles/pages/MovieGrid.css'
 
 const Search = () => {
     const [searchParams] = useSearchParams()
-    const query = searchParams.get("q")
-    
-    const [movies, setMovies] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [content, setContent] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [contentType, setContentType] = useState('movie')
 
-    useEffect(() => {
-        const searchMovies = async () => {
-            if (!query) return
+    const query = searchParams.get("q") || ""
+    const filters = {
+        year: searchParams.get("year") || "",
+        genre: searchParams.get("genre") || ""
+    }
 
-            try {
-                setLoading(true)
-                const data = await movieService.search(query)
-                setMovies(data.results)
-            } catch (err) {
-                setError('Failed to search movies')
-                console.error(err)
-            } finally {
-                setLoading(false)
-            }
+    const searchContent = useCallback(async () => {
+        if (!query) {
+            setContent([])
+            return
         }
 
-        searchMovies()
-    }, [query])
+        try {
+            setLoading(true)
+            setError(null)
+            setContent([]) // Limpa os resultados anteriores
 
-    if (loading) return <div className="container"><h2 className="title">Carregando...</h2></div>
-    if (error) return <div className="container"><h2 className="title">{error}</h2></div>
+            const data = await tmdbService.search(query, {
+                ...filters,
+                type: contentType
+            })
+            
+            if (!data?.results) {
+                throw new Error('Resposta inválida do servidor')
+            }
+
+            setContent(data.results)
+        } catch (err) {
+            console.error('Error searching content:', err)
+            setError(err.message || 'Falha ao buscar conteúdo. Por favor, tente novamente.')
+            setContent([])
+        } finally {
+            setLoading(false)
+        }
+    }, [query, filters.year, filters.genre, contentType])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            searchContent()
+        }, 300) // Pequeno debounce para evitar múltiplas chamadas
+
+        return () => clearTimeout(timer)
+    }, [searchContent])
+
+    const handleFilterChange = useCallback((newFilters) => {
+        const params = new URLSearchParams(searchParams)
+        if (newFilters.year) params.set("year", newFilters.year)
+        else params.delete("year")
+        if (newFilters.genre) params.set("genre", newFilters.genre)
+        else params.delete("genre")
+        window.history.pushState({}, '', `?${params.toString()}`)
+    }, [searchParams])
+
+    const handleTypeChange = useCallback((newType) => {
+        setContentType(newType)
+    }, [])
 
     return (
         <div className="container">
             <h2 className="title">
                 Resultados para: <span className="query-text">{query}</span>
             </h2>
+
+            <ContentTypeSwitch 
+                type={contentType} 
+                onTypeChange={handleTypeChange} 
+            />
+
+            <MovieFilters
+                onFilterChange={handleFilterChange}
+                initialFilters={filters}
+                contentType={contentType}
+            />
+
             <div className="movies-container">
-                {movies.length === 0 && (
-                    <p>Nenhum filme encontrado para: {query}</p>
+                {loading && content.length === 0 && (
+                    <div className="loading">
+                        <h3>Carregando resultados...</h3>
+                    </div>
                 )}
-                {movies.map(movie => (
-                    <MovieCard key={movie.id} movie={movie} />
+
+                {error && (
+                    <div className="error">
+                        <h3>Erro</h3>
+                        <p>{error}</p>
+                    </div>
+                )}
+
+                {!loading && !error && content.length === 0 && query && (
+                    <div className="no-results">
+                        <h3>Nenhum resultado encontrado</h3>
+                        <p>Tente mudar os filtros ou fazer uma nova busca</p>
+                    </div>
+                )}
+
+                {content.map((item, index) => (
+                    <MovieCard
+                        key={`${item.id}-${contentType}`}
+                        movie={item}
+                        type={contentType}
+                        index={index}
+                    />
                 ))}
             </div>
         </div>
