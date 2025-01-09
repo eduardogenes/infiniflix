@@ -1,42 +1,212 @@
 #navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: #121212;
+}
+
+#navbar h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    position: relative;
 }
 
 #navbar h2 a {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.3s;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+#navbar h2 a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.2) 80%,
+        transparent
+    );
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+#navbar h2 a:hover {
+    color: #e2e8f0;
+}
+
+#navbar h2 a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+#navbar h2 svg {
+    font-size: 1.5rem;
+    color: #e2e8f0;
+    transition: transform 0.3s ease;
+}
+
+#navbar h2 a:hover svg {
+    transform: rotate(-10deg);
 }
 
 #navbar form {
     display: flex;
     gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#navbar form::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    padding: 1px;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+#navbar form:focus-within {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
 }
 
 #navbar input {
-    padding: 0.2rem 0.8rem;
+    padding: 0.5rem 1rem;
     border-radius: 4px;
     border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 250px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+#navbar input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#navbar input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 300px;
 }
 
 #navbar form button {
-    background-color: #f7d354;
-    border: 2px solid #f7d354;
-    border-radius: 4px;
-    color: #000;
+    background-color: transparent;
+    border: none;
+    color: #fff;
     padding: 0.3rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: 0.4s;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+#navbar form button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+#navbar form button:hover::before {
+    transform: translateX(0);
+}
+
+#navbar form button svg {
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+#navbar form button:hover svg {
+    transform: scale(1.1);
+    color: #fff;
 }
 
 #navbar form button:hover {
-    background-color: transparent;
-    color: #f7d354;
+    color: #01b4e4;
+}
+
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    #navbar form {
+        width: 100%;
+    }
+
+    #navbar input {
+        width: 100%;
+    }
+
+    #navbar input:focus {
+        width: 100%;
+    }
+
+    #navbar form button {
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #navbar h2 a {
+        font-size: 1.2rem;
+    }
+
+    #navbar form button {
+        padding: 0.5rem 0.8rem;
+    }
 }
