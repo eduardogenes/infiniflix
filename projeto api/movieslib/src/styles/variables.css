@@ -1,0 +1,55 @@
+:root {
+  /* Cores principais */
+  --primary-color: #0d253f;
+  --primary-color-rgb: 13, 37, 63;
+  --secondary-color: #01b4e4;
+  --secondary-color-rgb: 1, 180, 228;
+  --tertiary-color: #90cea1;
+  --tertiary-color-rgb: 144, 206, 161;
+  
+  /* Variações */
+  --primary-light: #163a5f;
+  --primary-light-rgb: 22, 58, 95;
+  --primary-dark: #091b2e;
+  --primary-dark-rgb: 9, 27, 46;
+  --secondary-light: #33c3e9;
+  --secondary-light-rgb: 51, 195, 233;
+  --secondary-dark: #0190b6;
+  --secondary-dark-rgb: 1, 144, 182;
+  --tertiary-light: #a5d8b4;
+  --tertiary-light-rgb: 165, 216, 180;
+  --tertiary-dark: #74b488;
+  --tertiary-dark-rgb: 116, 180, 136;
+
+  /* Cores de texto */
+  --text-light: #ffffff;
+  --text-dark: #0d253f;
+  --text-dark-rgb: 13, 37, 63;
+  --text-gray: #718096;
+
+  /* Cores de fundo */
+  --bg-primary: var(--primary-color);
+  --bg-secondary: #f8fafc;
+  --bg-dark: #1a202c;
+  --bg-dark-rgb: 26, 32, 44;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Border radius */
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 1rem;
+
+  /* Espaçamento */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Container */
+  --container-width: 1200px;
+}
